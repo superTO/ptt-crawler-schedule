@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@main
+      - uses: actions/checkout@myself
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.2
