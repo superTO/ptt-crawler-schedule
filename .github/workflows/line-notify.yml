@@ -1,0 +1,44 @@
+name: 'line-notify'
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron:  "0 6 * * *" # 要用臺灣時間減8小時。例如如果要在臺灣的半夜4點執行，則需要設為 "0 20 * * *"
+# env:
+#   # Setting an environment variable with the value of a configuration variable
+#   TEST_DATA: ${{ vars.TEST_DATA }}
+
+jobs:
+  line-notify-send-message:
+    # assign github Environments
+    environment: main
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.0.2
+        with:
+          # Version Spec of the version to use in SemVer notation.
+          # It also emits such aliases as lts, latest, nightly and canary builds
+          # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
+          node-version: '20.x'
+      - run: |
+          npm install
+          node script.js
+
+      - name: Read log file
+        id: log
+        uses: juliangruber/read-file-action@v1.1.7
+        with:
+          path: ./log/crawler_log.txt
+
+      - name: LINE Notify
+        uses: snow-actions/line-notify@v1.1.0      
+        with:
+          access_token: ${{ secrets.LINE_NOTIFY_TOKEN }}
+          # message: ${{ env.TEST_DATA }}
+          # 回傳爬蟲資料
+          message: ${{ steps.log.outputs.content }}
+
