@@ -19,7 +19,7 @@ async function main() {
 		// filter data
 		const filteredData = FilterOption(TransformToObject(ptt), item.option)
 		// generate log content
-		content += filteredData.length > 0 ? `---${item.boardName}---\n` : ``;
+		content += filteredData.length > 0 ? `---${item.boardName}---\n\n` : `\n`;
 		for (let item of filteredData) {
 			content += item.approval + ' 推 - ' + item.title + ' - 日期:' + item.date + ' - ' + item.author + ' - ' + item.url + '\n';
 		}
