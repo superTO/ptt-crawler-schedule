@@ -16,8 +16,9 @@ jobs:
     
     steps:
       - uses: actions/checkout@main
-        with:
-          ref: myself
+        # 測試環境需要註解掉, 否則 workflow_dispatch 沒辦法選擇觸發的branch
+        # with:
+        #   ref: myself
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v4.0.2
