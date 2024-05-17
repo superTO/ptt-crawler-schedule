@@ -9,7 +9,7 @@ var searchOption = [
 	}, 
 	{
 		boardName: 'Lifeismoney',
-		pages: 3,
+		pages: 2,
 		option : {
 			approval: 50
 		}
@@ -19,6 +19,20 @@ var searchOption = [
 		pages: 3,
 		option : {
 			authors: ['f204137', 'yinglinga', 'zesonpso']
+		}
+	},
+	{
+		boardName: 'Stock',
+		pages: 3,
+		option : {
+			approval: 100
+		}
+	},
+	{
+		boardName: 'Soft_Job',
+		pages: 1,
+		option : {
+			approval: 50
 		}
 	},
 	{
