@@ -8,7 +8,7 @@ async function main() {
 	// *** Initialize ***
 	await ptt_crawler.initialize();
 
-	let content = '\n';
+	let content = '';
 	for (let item of searchOption) {
 		const ptt = await ptt_crawler.getResults({
 			board: item.boardName,
@@ -19,9 +19,9 @@ async function main() {
 		// filter data
 		const filteredData = FilterOption(TransformToObject(ptt), item.option)
 		// generate log content
-		content += filteredData.length > 0 ? `---${item.boardName}---\n\n` : `\n`;
+		content += filteredData.length > 0 ? `<${item.boardName}>\n` : ``;
 		for (let item of filteredData) {
-			content += item.approval + ' 推 - ' + item.title + ' - 日期:' + item.date + ' - ' + item.author + ' - ' + item.url + '\n';
+			content += item.approval + ' 推 - ' + '日期:' + item.date + ' - ' + item.title + ' - ' + item.author + ' - ' + item.url + '\n';
 		}
 	}
 

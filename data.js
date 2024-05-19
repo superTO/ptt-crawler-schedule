@@ -1,16 +1,9 @@
 var searchOption = [
 	{
-		boardName: 'Coffee',
-		pages: 1,
-		option : {
-			// 推文數
-			approval: 20
-		}
-	}, 
-	{
 		boardName: 'Lifeismoney',
 		pages: 2,
 		option : {
+			// 推文數
 			approval: 50
 		}
 	},
@@ -33,6 +26,13 @@ var searchOption = [
 		pages: 1,
 		option : {
 			approval: 50
+		}
+	},
+	{
+		boardName: 'Coffee',
+		pages: 1,
+		option : {
+			approval: 20
 		}
 	},
 	{
