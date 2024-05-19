@@ -1,6 +1,13 @@
 const ptt_crawler = require('@waynechang65/ptt-crawler/lib/ptt_crawler');
+const request = require("request");
 const { searchOption } = require('./data');
-const fs = require('node:fs');
+
+// 取得參數
+let args = process.argv.slice(2);
+if (!args[0]) {
+	console.log('Need LINE_NOTIFY_TOKEN !');
+	return;
+}
 
 main();
 
@@ -9,6 +16,8 @@ async function main() {
 	await ptt_crawler.initialize();
 
 	let content = '';
+	// split content
+	let contentArray = [];
 	for (let item of searchOption) {
 		const ptt = await ptt_crawler.getResults({
 			board: item.boardName,
@@ -21,14 +30,33 @@ async function main() {
 		// generate log content
 		content += filteredData.length > 0 ? `<${item.boardName}>\n` : ``;
 		for (let item of filteredData) {
-			content += item.approval + ' 推 - ' + '日期:' + item.date + ' - ' + item.title + ' - ' + item.author + ' - ' + item.url + '\n';
+			if (content.length < 900) {
+				content += item.approval + ' 推 - ' + '日期:' + item.date + ' - ' + item.title + ' - ' + item.author + ' - ' + item.url + '\n';
+			} else {
+				contentArray.push(content)
+				content = item.approval + ' 推 - ' + '日期:' + item.date + ' - ' + item.title + ' - ' + item.author + ' - ' + item.url + '\n';
+			}
 		}
 	}
-
-	fs.writeFileSync('./log/crawler_log.txt', content)
+	contentArray.push(content)
 
 	// *** Close      ***
 	await ptt_crawler.close();
+
+
+	// Line notify
+	if (contentArray.length === 0) {
+		console.log('no message');
+		return;
+	}
+	if (contentArray.length > 5) {
+		console.log('Line notify 最多一次傳5則訊息');
+		return;
+	}
+
+	for (let message of contentArray) {
+		Notify(args[0], message)
+	}
 }
 
 /**
@@ -52,10 +80,10 @@ function TransformToObject(ptt) {
 }
 
 /**
- * @param {*} ptt: PTTResult[]
- * @return {*} PTTResult[]
+ * @param {PTTResult[]} ptt
+ * @return PTTResult[]
  */
-function FilterOption(ptt, options){
+function FilterOption(ptt, options) {
 	return ptt
 		// 推文數
 		// 若沒設定 approval default = 0
@@ -66,9 +94,40 @@ function FilterOption(ptt, options){
 		.filter(x => options.title_Includes ? x.title.includes(options.title_Includes) : true)
 }
 
+/**
+ * @param {string} token LINE_NOTIFY_TOKEN
+ * @param {string} message (message.length <= 1000)
+ */
+function Notify(token, message) {
+	if(message.length > 1200) {
+		console.log('Line notify message maxLength = 1000');
+		return;
+	}
+
+	request
+		.post("https://notify-api.line.me/api/notify", {
+			auth: {
+				bearer: token,
+			},
+			form: {
+				message
+			},
+		})
+		.on("response", function (response) {
+			response.setEncoding("utf8");
+			response.on("data", function (data) {
+				console.log(data);
+				// if (response.statusCode !== 200) {
+				// 	console.log(data.message);
+				// }
+			});
+		});
+}
+
 module.exports = {
 	FilterOption,
-	TransformToObject
+	TransformToObject,
+	Notify
 };
 
 // FilterOption(testData, {})

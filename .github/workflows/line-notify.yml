@@ -20,7 +20,7 @@ jobs:
         # with:
         #   ref: myself
 
-      - name: Setup Node.js environment
+      - name: Setup Node.js environment & cat message & trigger Line notify
         uses: actions/setup-node@v4.0.2
         with:
           # Version Spec of the version to use in SemVer notation.
@@ -29,19 +29,19 @@ jobs:
           node-version: '20.x'
       - run: |
           npm install
-          node index.js
+          node index.js ${{ secrets.LINE_NOTIFY_TOKEN }}
 
-      - name: Read log file
-        id: log
-        uses: juliangruber/read-file-action@v1.1.7
-        with:
-          path: ./log/crawler_log.txt
+      # - name: Read log file
+      #   id: log
+      #   uses: juliangruber/read-file-action@v1.1.7
+      #   with:
+      #     path: ./log/crawler_log.txt
 
-      - name: LINE Notify
-        uses: snow-actions/line-notify@v1.1.0      
-        with:
-          access_token: ${{ secrets.LINE_NOTIFY_TOKEN }}
-          # message: ${{ env.TEST_DATA }}
-          # 回傳爬蟲資料
-          message: ${{ steps.log.outputs.content }}
+      # - name: LINE Notify
+      #   uses: snow-actions/line-notify@v1.1.0      
+      #   with:
+      #     access_token: ${{ secrets.LINE_NOTIFY_TOKEN }}
+      #     # message: ${{ env.TEST_DATA }}
+      #     # 回傳爬蟲資料
+      #     message: ${{ steps.log.outputs.content }}
 
