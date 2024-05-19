@@ -26,10 +26,12 @@ jobs:
         while [[ ${#message} -gt 0 ]]; do
           # 取得前 max_length 個字元
           chunk="${message:0:max_length}"
+          # URL encode the chunk to handle special characters
+          encoded_chunk=$(echo "$chunk" | jq -sRr @uri)
           # 發送這段訊息
           curl -X POST \
             -H "Authorization: Bearer $token" \
-            -F "message=$chunk" \
+            -d "message=$encoded_chunk" \
             https://notify-api.line.me/api/notify
           # 移除已發送的部分
           message="${message:max_length}"
