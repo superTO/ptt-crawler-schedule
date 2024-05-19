@@ -1,0 +1,38 @@
+name: Line Notify Message Splitter
+
+on: 
+    workflow_dispatch:
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Send Line Notify messages
+      run: |
+        # 設定要發送的訊息
+        message="<Coffee>\n93 推 - 日期:5/17 - [廣宣]愛貓分享 坦尚尼亞 刺槐山莊園 藝伎 - babalala1109 - https://www.ptt.cc/bbs/Coffee/M.1715958336.A.896.html\n37 推 - 日期:5/13 - [器材] Hario V60 Switch尺寸請益 - zadpos - https://www.ptt.cc/bbs/Coffee/M.1715592381.A.766.html\n58 推 - 日期:5/12 - [廣宣]五間厝咖啡 母親節與大家分享愛 - wesiy - https://www.ptt.cc/bbs/Coffee/M.1715497321.A.92C.html\n9999 推 - 日期:5/12 - [情報] 送！精品咖啡分享包！直接送!有夠送！ - allpafighter - https://www.ptt.cc/bbs/Coffee/M.1715482137.A.BFC.html\n<Lifeismoney>\n58 推 - 日期:5/18 - [情報] 星巴克5/20.21買一送一（有星冰樂） - puppyman - https://www.ptt.cc/bbs/Lifeismoney/M.1716022434.A.B56.html\n57 推 - 日期:5/18 - [情報] 蝦皮豬肉滿福堡加蛋+四塊麥克鷄塊$58 - Eddielin - https://www.ptt.cc/bbs/Lifeismoney/M.1715961962.A.0CE.html\n53 推 - 日期:5/17 - [情報] GoShare 騎乘金 - MEOWWW - https://www.ptt.cc/bbs/Lifeismoney/M.1715946529.A.C4C.html\n9999 推 - 日期:5/17 - [情報] PK雙饗卡APP 免費送可樂 1.25L(結束) - arashivivian - https://www.ptt.cc/bbs/Lifeismoney/M.1715934821.A.E65.html\n<Stock>\n9999 推 - 日期:5/18 - [標的] 信貸150萬all in台灣50正二可行嗎？ - PsycheBeast - https://www.ptt.cc/bbs/Stock/M.1716015994.A.3B7.html\n9999 推 - 日期:5/18 - [新聞] 台積電下車潮 股民連3周下滑 7.8萬人離場 - kiversonx17 - https://www.ptt.cc/bbs/Stock/M.1716004832.A.6D1.html\n9999 推 - 日期:5/18 - [新聞] 財富自由！散戶正創造奇蹟　少年股神狂 - qazsedcft - https://www.ptt.cc/bbs/Stock/M.1715963357.A.7C3.html\n<Soft_Job>\n76 推 - 日期:5/14 - [請益] 金融業IT分紅不透明，該繼續待下去嗎？ - RuRu0421 - https://www.ptt.cc/bbs/Soft_Job/M.1715693886.A.416.html"
+
+        # 設定 Line Notify 的存取權杖
+        token=${{ secrets.LINE_NOTIFY_TOKEN }}
+
+        # 設定每一段的最大字數
+        max_length=1000
+
+        # 切割訊息並發送
+        while [[ ${#message} -gt 0 ]]; do
+          # 取得前 max_length 個字元
+          chunk="${message:0:max_length}"
+          # 發送這段訊息
+          curl -X POST \
+            -H "Authorization: Bearer $token" \
+            -F "message=$chunk" \
+            https://notify-api.line.me/api/notify
+          # 移除已發送的部分
+          message="${message:max_length}"
+          # 暫停1秒以避免觸發速率限制
+          sleep 1
+        done
