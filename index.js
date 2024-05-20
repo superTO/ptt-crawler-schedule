@@ -56,6 +56,8 @@ async function main() {
 
 	for (let message of contentArray) {
 		Notify(args[0], message)
+		if(contentArray[contentArray.length - 1] === message) return;
+		await sleep(0.3)
 	}
 }
 
@@ -123,6 +125,11 @@ function Notify(token, message) {
 			});
 		});
 }
+
+/**
+ * @param {number} sec
+ */
+const sleep = async (sec) => new Promise(resolve => setTimeout(resolve, sec * 1000));
 
 module.exports = {
 	FilterOption,
