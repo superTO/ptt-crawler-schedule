@@ -32,7 +32,8 @@ var searchOption = [
 		boardName: 'Coffee',
 		pages: 1,
 		option : {
-			approval: 20
+			approval: 20,
+			daysPriorToday: 5
 		}
 	},
 	{

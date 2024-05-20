@@ -67,9 +67,20 @@ async function main() {
  */
 function TransformToObject(ptt) {
 	let result = [];
+
+    // date 需要補上年份
+    // 判斷月份都是1&12月的時候
+    if(ptt.dates.every(date => date.includes('1/') || date.includes('12/'))) {
+        const currentYear = new Date().getFullYear();
+        ptt.dates = ptt.dates.map(x => x.includes('1/') ? `${currentYear.toString()}/${x}` : `${(currentYear-1).toString()}/${x}`)
+    } else {
+        const currentYear = new Date().getFullYear();
+        ptt.dates = ptt.dates.map(x => `${currentYear.toString()}/${x}`)
+    }
+
 	for (let i = 0; i < ptt.titles.length; i++) {
 		result.push({
-			approval: ptt.rates[i] === '爆' ? 9999 : parseInt(ptt.rates[i]),
+			approval: ptt.rates[i] === '爆' ? 9999 : ptt.rates[i] === '' ? 0 : parseInt(ptt.rates[i]),
 			title: ptt.titles[i],
 			date: ptt.dates[i],
 			author: ptt.authors[i],
@@ -90,6 +101,8 @@ function FilterOption(ptt, options) {
 		// 推文數
 		// 若沒設定 approval default = 0
 		.filter(x => x.approval >= (options.approval || 0))
+		// 日期
+		.filter(x => options.daysPriorToday ? new Date(x.date) >= new Date(new Date().setDate(new Date().getDate() - options.daysPriorToday)) : true)
 		// 作者
 		.filter(x => options.authors ? options.authors.includes(x.author) : true)
 		// 標題
@@ -134,7 +147,8 @@ const sleep = async (sec) => new Promise(resolve => setTimeout(resolve, sec * 10
 module.exports = {
 	FilterOption,
 	TransformToObject,
-	Notify
+	Notify,
+	sleep
 };
 
 // FilterOption(testData, {})
