@@ -28,7 +28,7 @@ async function main() {
 		// filter data
 		const filteredData = FilterOption(TransformToObject(ptt), item.option)
 		// generate log content
-		content += filteredData.length > 0 ? `<${item.boardName}>\n` : ``;
+		content += filteredData.length > 0 ? `<${item.lineTitle}>\n` : ``;
 		for (let item of filteredData) {
 			if (content.length < 900) {
 				content += item.approval + ' 推 - ' + '日期:' + item.date + ' - ' + item.title + ' - ' + item.author + ' - ' + item.url + '\n';
