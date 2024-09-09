@@ -13,7 +13,7 @@ var searchOption = [
 		lineTitle: '股板大神發文啦!',
 		pages: 3,
 		option : {
-			authors: ['f204137', 'yinglinga', 'zesonpso', 'book1999', 'onekoni']
+			authors: ['f204137', 'yinglinga', 'zesonpso', 'book1999', 'onekoni', 'leo15824']
 		}
 	},
 	{
@@ -47,7 +47,9 @@ var searchOption = [
 		lineTitle: 'MD禁卡表',
 		pages: 1,
 		option : {
-			title_Includes: '[M.D.] 限制卡'
+			title_Includes: '[M.D.] 新限制',
+			// 文章日期最多距離執行日期多久
+			daysPriorToday: 3
 		}
 	}
 ];
