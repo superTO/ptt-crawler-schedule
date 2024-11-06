@@ -1,0 +1,27 @@
+name: 'line-message-api'
+
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron:  "0 5,12 * * *" # 要用臺灣時間減8小時。例如如果要在臺灣的半夜4點執行，則需要設為 "0 20 * * *"
+
+jobs:
+  line-notify-send-message:
+    # assign github Environments
+    environment: line-message-api
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@main
+
+      - name: Setup Node.js environment & cat message & trigger Line notify
+        uses: actions/setup-node@v4.0.2
+        with:
+          # Version Spec of the version to use in SemVer notation.
+          # It also emits such aliases as lts, latest, nightly and canary builds
+          # Examples: 12.x, 10.15.1, >=10.15.0, lts/Hydrogen, 16-nightly, latest, node
+          node-version: '20.x'
+      - run: |
+          npm install
+          node index.js ${{ secrets.CHANNEL_ACCESS_TOKEN }} ${{ secrets.USERID }}
+

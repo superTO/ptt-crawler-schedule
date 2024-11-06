@@ -49,31 +49,33 @@ function FilterOption(ptt, options) {
 }
 
 /**
- * @param {string} token LINE_NOTIFY_TOKEN
- * @param {string} message (message.length <= 1000)
+ * @param {string} token Channel access token
+ * @param {string} userID Your user ID
+ * @param {string} message (message.length <= 5000)
  */
-function Notify(token, message) {
-	if(message.length > 1200) {
-		console.log('Line notify message maxLength = 1000');
-		return;
-	}
+function PushMessageAPI(token, userID, message) {
+	const LINE_MESSAGING_API = 'https://api.line.me/v2/bot/message/push';
+	const LINE_HEADER = {
+		'Content-Type': 'application/json',
+		'Authorization': `Bearer ${token}`
+	};
 
-	request
-		.post("https://notify-api.line.me/api/notify", {
-			auth: {
-				bearer: token,
-			},
-			form: {
-				message
-			},
+	request.post(LINE_MESSAGING_API, {
+			headers: LINE_HEADER,
+            json: {
+                "to": userID,
+                "messages":[
+                    {			
+                        "type": "text",	
+                        "text": message
+                    }
+                ]
+            }
 		})
 		.on("response", function (response) {
 			response.setEncoding("utf8");
 			response.on("data", function (data) {
 				console.log(data);
-				// if (response.statusCode !== 200) {
-				// 	console.log(data.message);
-				// }
 			});
 		});
 }
@@ -86,7 +88,7 @@ const sleep = async (sec) => new Promise(resolve => setTimeout(resolve, sec * 10
 module.exports = {
 	FilterOption,
 	TransformToObject,
-	Notify,
+	PushMessageAPI,
 	sleep
 };
 

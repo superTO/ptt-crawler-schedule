@@ -1,11 +1,16 @@
 const ptt_crawler = require('@waynechang65/ptt-crawler/lib/ptt_crawler');
 const { searchOption } = require('./data');
-const { FilterOption, TransformToObject, Notify, sleep } = require('./function');
+const { FilterOption, TransformToObject, PushMessageAPI, sleep } = require('./function');
 
 // 取得參數
 let args = process.argv.slice(2);
 if (!args[0]) {
 	console.log('Need LINE_NOTIFY_TOKEN !');
+	return;
+}
+
+if (!args[1]) {
+	console.log('Need YOU USER ID !');
 	return;
 }
 
@@ -30,7 +35,8 @@ async function main() {
 		// generate log content
 		content += filteredData.length > 0 ? `<${item.lineTitle}>\n` : ``;
 		for (let item of filteredData) {
-			if (content.length < 900) {
+			// LINE MESSAGE Length must be between 0 and 5000
+			if (content.length < 4500) {
 				content += item.approval + ' 推 - ' + '日期:' + item.date + ' - ' + item.title + ' - ' + item.author + ' - ' + item.url + '\n';
 			} else {
 				contentArray.push(content)
@@ -55,7 +61,7 @@ async function main() {
 	}
 
 	for (let message of contentArray) {
-		Notify(args[0], message)
+		PushMessageAPI(args[0], args[1], message)
 		if(contentArray[contentArray.length - 1] === message) return;
 		await sleep(0.3)
 	}
