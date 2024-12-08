@@ -1,10 +1,10 @@
-const request = require("request");
+import fetch from 'node-fetch';
 
 /**
  * @param {*} ptt: PTTResponse
  * @returns PTTResult[]
  */
-function TransformToObject(ptt) {
+export function TransformToObject(ptt) {
 	let result = [];
 
     // date 需要補上年份
@@ -35,7 +35,7 @@ function TransformToObject(ptt) {
  * @param {PTTResult[]} ptt
  * @return PTTResult[]
  */
-function FilterOption(ptt, options) {
+export function FilterOption(ptt, options) {
 	return ptt
 		// 推文數
 		// 若沒設定 approval default = 0
@@ -53,44 +53,37 @@ function FilterOption(ptt, options) {
  * @param {string} userID Your user ID
  * @param {string} message (message.length <= 5000)
  */
-function PushMessageAPI(token, userID, message) {
+export async function PushMessageAPI(token, userID, message) {
 	const LINE_MESSAGING_API = 'https://api.line.me/v2/bot/message/push';
 	const LINE_HEADER = {
 		'Content-Type': 'application/json',
 		'Authorization': `Bearer ${token}`
 	};
 
-	request.post(LINE_MESSAGING_API, {
-			headers: LINE_HEADER,
-            json: {
+	try {
+		await fetch(LINE_MESSAGING_API, {
+            method: 'POST',
+            headers: LINE_HEADER,
+				body: JSON.stringify({
                 "to": userID,
-                "messages":[
-                    {			
-                        "type": "text",	
+				"messages": [
+                    {
+						"type": "text",
                         "text": message
                     }
                 ]
-            }
-		})
-		.on("response", function (response) {
-			response.setEncoding("utf8");
-			response.on("data", function (data) {
-				console.log(data);
-			});
-		});
+            })
+        });
+    } catch (error) {
+        console.error('Error:', error);
+    }
 }
 
 /**
  * @param {number} sec
  */
-const sleep = async (sec) => new Promise(resolve => setTimeout(resolve, sec * 1000));
+export const sleep = async (sec) => new Promise(resolve => setTimeout(resolve, sec * 1000));
 
-module.exports = {
-	FilterOption,
-	TransformToObject,
-	PushMessageAPI,
-	sleep
-};
 
 // FilterOption(testData, {})
 

@@ -2,6 +2,7 @@
   "name": "ptt-scrawler-schedule",
   "version": "1.0.0",
   "description": "crawler & github action & line notify",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "test": "jest ./test/",
@@ -23,10 +24,9 @@
   },
   "dependencies": {
     "@waynechang65/ptt-crawler": "^2.6.0",
-    "request": "^2.88.2"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
-    "eslint": "^8.25.0",
     "jest": "^29.2.0"
   }
 }

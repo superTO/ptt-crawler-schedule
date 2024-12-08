@@ -63,3 +63,8 @@ typings/
 
 # next.js build output
 .next
+
+
+# custom
+line-message-api-token.json
+userID.json

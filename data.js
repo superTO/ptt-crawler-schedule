@@ -1,4 +1,4 @@
-var searchOption = [
+export const searchOption = [
 	{
 		boardName: 'Lifeismoney',
 		lineTitle: 'Lifeismoney推文數>50',
@@ -53,5 +53,3 @@ var searchOption = [
 		}
 	}
 ];
-
-module.exports = { searchOption };

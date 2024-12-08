@@ -1,4 +1,4 @@
-const { FilterOption } = require("../function");
+import FilterOption from '../function.js'
 
 let data = [
 	{

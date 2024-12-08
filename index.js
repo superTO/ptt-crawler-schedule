@@ -1,17 +1,17 @@
-const ptt_crawler = require('@waynechang65/ptt-crawler/lib/ptt_crawler');
-const { searchOption } = require('./data');
-const { FilterOption, TransformToObject, PushMessageAPI, sleep } = require('./function');
+import ptt_crawler from '@waynechang65/ptt-crawler/lib/ptt_crawler.js';
+import { searchOption } from './data.js';
+import { FilterOption, TransformToObject, PushMessageAPI, sleep } from './function.js';
 
 // 取得參數
 let args = process.argv.slice(2);
 if (!args[0]) {
-	console.log('Need LINE_NOTIFY_TOKEN !');
-	return;
+	console.log('Need LINE_MESSAGE_API_TOKEN !');
+	process.exit(1); // 終止程式，返回錯誤碼
 }
 
 if (!args[1]) {
 	console.log('Need YOU USER ID !');
-	return;
+	process.exit(1); // 終止程式，返回錯誤碼
 }
 
 main();
@@ -50,18 +50,18 @@ async function main() {
 	await ptt_crawler.close();
 
 
-	// Line notify
+	// Line message api
 	if (contentArray.length === 0) {
 		console.log('no message');
 		return;
 	}
 	if (contentArray.length > 5) {
-		console.log('Line notify 最多一次傳5則訊息');
+		console.log('最多一次傳5則訊息');
 		return;
 	}
 
 	for (let message of contentArray) {
-		PushMessageAPI(args[0], args[1], message)
+		await PushMessageAPI(args[0], args[1], message)
 		if(contentArray[contentArray.length - 1] === message) return;
 		await sleep(0.3)
 	}
