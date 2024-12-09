@@ -17,8 +17,8 @@ jobs:
       # 安裝 Puppeteer 必需的系統依賴
       - name: Install Puppeteer dependencies
         run: |
-          apt-get update
-          apt-get install -y libnss3 libxss1 libasound2
+          sudo apt-get update
+          sudo apt-get install -y libnss3 libxss1 libasound2
 
       - name: Setup Node.js environment & cat message & trigger Line notify
         uses: actions/setup-node@v4.0.2
