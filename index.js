@@ -18,7 +18,7 @@ main();
 
 async function main() {
 	// *** Initialize ***
-	await ptt_crawler.initialize();
+	await ptt_crawler.initialize({headless: true});
 
 	let content = '';
 	// split content
