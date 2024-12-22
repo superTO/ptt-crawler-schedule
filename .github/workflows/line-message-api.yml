@@ -9,7 +9,7 @@ jobs:
   line-notify-send-message:
     # assign github Environments
     environment: line-message-api
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     
     steps:
       - uses: actions/checkout@v3
