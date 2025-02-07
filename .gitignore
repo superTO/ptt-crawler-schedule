@@ -68,3 +68,6 @@ typings/
 # custom
 line-message-api-token.json
 userID.json
+USERID
+LINE_MESSAGE_API_TOKEN
+local-implement.bat
