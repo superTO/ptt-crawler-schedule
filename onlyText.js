@@ -6,7 +6,7 @@ main();
 
 async function main() {
 	// *** Initialize ***
-	await ptt_crawler.initialize();
+	await ptt_crawler.initialize({ headless: "new" , args: ['--disable-setuid-sandbox', '--no-sandbox']});
 
 	let content = '';
 	// split content
