@@ -13,7 +13,7 @@ export const searchOption = [
 		lineTitle: '股板大神發文啦!',
 		pages: 3,
 		option : {
-			authors: ['f204137', 'yinglinga', 'zesonpso', 'book1999', 'onekoni', 'leo15824']
+			authors: ['f204137', 'yinglinga', 'zesonpso', 'book1999', 'onekoni', 'leo15824', 'Crypto']
 		}
 	},
 	{
@@ -22,6 +22,15 @@ export const searchOption = [
 		pages: 3,
 		option : {
 			approval: 100
+		}
+	},
+	{
+		boardName: 'Stock',
+		lineTitle: 'Stock 推文數超過 50 的 [標的]',
+		pages: 3,
+		option : {
+			approval: 50,
+			title_Includes: '[標的]'
 		}
 	},
 	{
