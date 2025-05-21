@@ -6,10 +6,10 @@ on:
   #   - cron:  "0 5,12 * * *" # 要用臺灣時間減8小時。例如如果要在臺灣的半夜4點執行，則需要設為 "0 20 * * *"
 
 jobs:
-  line-notify-send-message:
+  send-message:
     # assign github Environments
     environment: line-message-api
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     
     steps:
       - uses: actions/checkout@v3
