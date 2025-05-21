@@ -23,5 +23,5 @@ jobs:
           node-version: '20.12.2'
       - run: |
           npm install
-          node index.js ${{ secrets.CHANNEL_ACCESS_TOKEN }} ${{ secrets.USERID }}
+          node ./test/test-ptt-website.js
 
