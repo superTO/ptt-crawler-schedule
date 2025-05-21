@@ -7,3 +7,9 @@
 4. update "ptt-crawler-schedule/data.js"
 
 # [blog](https://superto.github.io/2024/05/21/ptt-crawler-line-notify/)
+
+
+
+## 2025-5-22 更新
+
+github action IP 會被 https://www.ptt.cc/bbs/ 擋掉, 所以會掃不到內容導致 timeout.
