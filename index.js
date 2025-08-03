@@ -1,4 +1,8 @@
-import ptt_crawler from '@waynechang65/ptt-crawler/lib/ptt_crawler.js';
+/* 
+google run cloud 不能接受 import ptt_crawler from '@waynechang65/ptt-crawler/lib/ptt_crawler.js';
+改成正規的import方式
+*/
+import * as ptt_crawler from '@waynechang65/ptt-crawler';
 import { searchOption } from './data.js';
 import { FilterOption, TransformToObject, PushMessageAPI, sleep } from './function.js';
 
@@ -16,6 +20,12 @@ import { FilterOption, TransformToObject, PushMessageAPI, sleep } from './functi
 
 const channelAccessToken = process.env.CHANNEL_ACCESS_TOKEN;
 const userId = process.env.USERID;
+
+if (!channelAccessToken || !userId) {
+    const errorMsg = '錯誤：環境變數 CHANNEL_ACCESS_TOKEN 或 USERID 未設定！';
+    console.error(errorMsg);
+    process.exit(1);
+}
 
 main();
 

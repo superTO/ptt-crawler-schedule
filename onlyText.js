@@ -1,4 +1,4 @@
-import ptt_crawler from '@waynechang65/ptt-crawler/lib/ptt_crawler.js';
+import * as ptt_crawler from '@waynechang65/ptt-crawler';
 import { searchOption } from './data.js';
 import { FilterOption, TransformToObject } from './function.js';
 
