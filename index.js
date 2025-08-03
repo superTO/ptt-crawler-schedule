@@ -3,16 +3,19 @@ import { searchOption } from './data.js';
 import { FilterOption, TransformToObject, PushMessageAPI, sleep } from './function.js';
 
 // 取得參數
-let args = process.argv.slice(2);
-if (!args[0]) {
-	console.log('Need LINE_MESSAGE_API_TOKEN !');
-	process.exit(1); // 終止程式，返回錯誤碼
-}
+// let args = process.argv.slice(2);
+// if (!args[0]) {
+// 	console.log('Need LINE_MESSAGE_API_TOKEN !');
+// 	process.exit(1); // 終止程式，返回錯誤碼
+// }
 
-if (!args[1]) {
-	console.log('Need YOU USER ID !');
-	process.exit(1); // 終止程式，返回錯誤碼
-}
+// if (!args[1]) {
+// 	console.log('Need YOU USER ID !');
+// 	process.exit(1); // 終止程式，返回錯誤碼
+// }
+
+const channelAccessToken = process.env.CHANNEL_ACCESS_TOKEN;
+const userId = process.env.USERID;
 
 main();
 
@@ -61,7 +64,7 @@ async function main() {
 	}
 
 	for (let message of contentArray) {
-		await PushMessageAPI(args[0], args[1], message)
+		await PushMessageAPI(channelAccessToken, userId, message)
 		if(contentArray[contentArray.length - 1] === message) return;
 		await sleep(0.3)
 	}
