@@ -34,6 +34,14 @@ export const searchOption = [
 		}
 	},
 	{
+		boardName: 'creditcard',
+		lineTitle: '信用卡版推文>50',
+		pages: 3,
+		option : {
+			approval: 50
+		}
+	},
+	{
 		boardName: 'Soft_Job',
 		lineTitle: 'Soft_Job推文數>50',
 		pages: 1,
