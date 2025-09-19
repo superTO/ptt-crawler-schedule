@@ -13,3 +13,9 @@
 ## 2025-5-22 更新
 
 github action IP 會被 https://www.ptt.cc/bbs/ 擋掉, 所以會掃不到內容導致 timeout.
+
+## 2025-9-19 更新
+
+branch: google-run-cloud
+
+成功將程式碼部屬到 GCP
