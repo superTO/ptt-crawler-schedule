@@ -1,0 +1,48 @@
+steps:
+  # 步驟 1: 使用 Docker 建置映像檔
+  # 我們使用 Google 提供的 docker builder
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'build'
+      - '-t'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/${_IMAGE_NAME}:$SHORT_SHA'
+      - '.'
+    id: 'Build Docker Image'
+
+  # 步驟 2: 將建置好的映像檔推送到 Artifact Registry
+  # $SHORT_SHA 是 Cloud Build 提供的變數，代表 git commit 的短碼，確保每次建置都有獨一無二的 tag
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      - 'push'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/${_IMAGE_NAME}:$SHORT_SHA'
+    id: 'Push to Artifact Registry'
+
+  # 步驟 3: 將新的映像檔部署到 Cloud Run Job
+  # 我們使用 Google 提供的 gcloud builder
+  - name: 'gcr.io/google-cloud-sdk/gcloud'
+    entrypoint: 'gcloud'
+    args:
+      - 'run'
+      - 'jobs'
+      - 'deploy'
+      - '${_JOB_NAME}' 
+      - '--image'
+      - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/${_IMAGE_NAME}:$SHORT_SHA'
+      - '--region'
+      - '${_REGION}'
+      - '--set-secrets=CHANNEL_ACCESS_TOKEN=projects/$PROJECT_ID/secrets/CHANNEL_ACCESS_TOKEN:latest,USERID=projects/$PROJECT_ID/secrets/USERID:latest'
+      - '--execute-now' # (可選) 部署後立刻執行一次，方便測試
+    id: 'Deploy to Cloud Run Jobs'
+
+# 指定最終要推送的映像檔，讓 Cloud Build 在日誌中顯示
+images:
+  - '${_REGION}-docker.pkg.dev/$PROJECT_ID/${_REPO_NAME}/${_IMAGE_NAME}:$SHORT_SHA'
+
+# 定義我們在上面用到的變數，方便在觸發器中設定
+options:
+  substitution_option: 'ALLOW_LOOSE'
+substitutions:
+  _REGION: 'asia-east1'
+  _REPO_NAME: 'my-docker-repo'
+  _IMAGE_NAME: 'ptt-crawler'
+  _JOB_NAME: 'ptt-crawler-everyday'
