@@ -13,7 +13,7 @@ export const searchOption = [
 		lineTitle: '股板大神發文啦!',
 		pages: 3,
 		option : {
-			authors: ['f204137', 'yinglinga', 'zesonpso', 'book1999', 'onekoni', 'leo15824', 'Crypto', 'mrp']
+			authors: ['f204137', 'yinglinga', 'zesonpso', 'book1999', 'onekoni', 'leo15824', 'Crypto', 'mrp', 'MrChen']
 		}
 	},
 	{
